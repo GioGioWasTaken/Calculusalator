@@ -6,17 +6,18 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Derivative or integral?\nEnter D/I.");
         String mode = scanner.next();
+        scanner.nextLine();
         Calculus calculus = new Calculus();
         if(mode.equalsIgnoreCase("D")) {
             calculus.setMode("Derivative");
             System.out.println("Please enter your expression: ");
-            String expr=scanner.next();
+            String expr=scanner.nextLine();
             calculus.calculate(expr,calculus.getMode());
         }
         else if(mode.equalsIgnoreCase("I")){
             calculus.setMode("Integral");
             System.out.println("Please enter your expression: ");
-            String expr=scanner.next();
+            String expr=scanner.nextLine();
             calculus.calculate(expr, calculus.getMode()); // for now always assume we will be given a variable
         }
         else{
