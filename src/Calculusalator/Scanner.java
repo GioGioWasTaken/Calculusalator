@@ -141,13 +141,23 @@ public class Scanner {
             }
             else if(token.type==LEFT_PAREN) operations.push(token);
 
-//            else if(token.type==RIGHT_PAREN){
-//
-//            }
+            else if(token.type==RIGHT_PAREN){
+            while(operations.peek().type!=LEFT_PAREN){
+                if(operations.isEmpty()){
+                    throw new RuntimeException("Unterminated parenthesis encountered.");
+                }
+                queue.add(operations.pop());
+            }
+            if(operations.peek().type==LEFT_PAREN) operations.pop();
+
+            }
 
         }
 
         while(!operations.isEmpty()){
+            if(operations.peek().type==LEFT_PAREN || operations.peek().type==RIGHT_PAREN){
+                throw new RuntimeException("Unterminated parenthesis encountered.");
+            }
             queue.add(operations.pop());
         }
         return queue;
