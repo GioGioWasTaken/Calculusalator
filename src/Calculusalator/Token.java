@@ -1,5 +1,5 @@
 package Calculusalator;
-class Token {
+public class Token {
     final Token_type type;
     final String lexeme;
 
