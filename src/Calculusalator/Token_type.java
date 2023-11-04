@@ -1,6 +1,5 @@
 package Calculusalator;
 
-import java.util.HashMap;
 import java.util.Stack;
 
 public enum Token_type {
@@ -14,20 +13,13 @@ public enum Token_type {
     FUNCTION, LEFT_PAREN, RIGHT_PAREN, EOI, INVALID;
 
     // FUNCTION is used for trigonometric functions, such as sin, cos and tan.
-    // The parens are there in order to make the input more organized
+    // The parenthesis types are there in order to make the input more organized
 
     public boolean isOperator(){
-        switch (this){
-            case PLUS:
-            case MINUS:
-            case MULTIPLICATION:
-            case DIVISION:
-            case POWER:
-            case SQRT:
-                return true;
-            default:
-                return false;
-        }
+        return switch (this) {
+            case PLUS, MINUS, MULTIPLICATION, DIVISION, POWER, SQRT -> true;
+            default -> false;
+        };
     }
 
 
@@ -35,20 +27,14 @@ public enum Token_type {
         int precedence = 0;
         switch (token.type){
             case PLUS:
-                precedence=1;
-                break;
             case MINUS:
                 precedence =1;
                 break;
             case MULTIPLICATION:
-                precedence=2;
-                break;
             case DIVISION:
                 precedence=2;
                 break;
             case POWER:
-                precedence=3;
-                break;
             case SQRT:
                 precedence =3;
                 break;
@@ -64,5 +50,6 @@ public enum Token_type {
         if(determinePriority(operations.peek())>=precedence) return true;
         else return false;
     }
+
 
 }

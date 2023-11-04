@@ -5,6 +5,19 @@ import java.util.*;
 import static Calculusalator.Token_type.*;
 
 public class Scanner {
+
+    public void output(String inputExpr) {
+        Scanner scanner = new Scanner(inputExpr);
+        List<Token> tokens=scanner.scanTokens();
+        Queue<Token> RPN= ScanExprtoRPN(tokens);
+        ASTNode AST = scanner.scanRPNtoAST(RPN);
+        System.out.println("infix expression: " + tokens);
+        System.out.println("Expression in RPN: " + RPN);
+        System.out.println("AST: ");
+        RPNtoAST.printTree(AST," ");
+
+    }
+
     private static final char NO_FORMER_CHARACTER = '\0';
     static int start =0; // start of the token
     static int current =0; // current position of the token
@@ -43,13 +56,12 @@ public class Scanner {
                 }
                 if (isVariable(c)){
                 variable();
-                break;
                 }
                 else {
                     addToken(INVALID);
                     // add code to report error to user
-                    break;
                 }
+                break;
         }
     }
 
@@ -84,7 +96,7 @@ public class Scanner {
     private void variable(){
         boolean case_1=false; // if 1 multiplication was already added...
         if(peekFormer()==NO_FORMER_CHARACTER){
-            addToken(NUMBER,"1"); // x is equivelent to 1*x
+            addToken(NUMBER,"1"); // x is equivalent to 1*x
             addToken(MULTIPLICATION,"*");
             case_1=true;
         }
@@ -123,7 +135,9 @@ public class Scanner {
         return c>='a' && c<='z' || c>='A' && c<='Z';
     }
 
-    public static Queue<Token> ScanExpr(List<Token> tokens){ // first reorganize the input to RPN, to transform into AST.
+
+
+    public static Queue<Token> ScanExprtoRPN(List<Token> tokens){ // to print the expr in RPN
         Stack<Token> operations = new Stack<>();
         Queue<Token> queue = new LinkedList<>();
         for(Token token :tokens){
@@ -162,4 +176,11 @@ public class Scanner {
         }
         return queue;
     }
+
+    public ASTNode scanRPNtoAST(Queue<Token> tokens){ // we can easily obtain an AST by reverse traversing the output queue.
+        return RPNtoAST.buildASTFromRPN(tokens);
+    }
+
+
+
 }
