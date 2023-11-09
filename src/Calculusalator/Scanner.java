@@ -102,16 +102,23 @@ public class Scanner {
         }
         // in accordance with mathematical notation nx= n*x
         if(peekFormer()!='*' && !case_1) {
+            if(isOperatorText(peekFormer())){
+                addToken(NUMBER,"1"); // if the expression is x but not at the start.
+            }
             addToken(MULTIPLICATION,"*");
         } // unless n*x was explicitly specified
 
 
 
-        System.out.println(peekFormer());
         addToken(VARIABLE);
     }
 
-
+    private boolean isOperatorText(Character chara){
+        if (chara=='-' || chara == '+'){
+            return true;
+        }
+        return false;
+    }
     private char peek() {
         if (isAtEnd()) return '\0';
         return inputExpr.charAt(current); // if the current character is \n it will return it and the tokenizer will stop advancing
@@ -146,7 +153,7 @@ public class Scanner {
             else if(token.type==VARIABLE) queue.add(token);
             else if(token.type.isOperator()){
                 while(token.type.isLowerPriority(operations,token)){
-                    System.out.println(token.type + " Has lower priority than " + operations.peek());
+                    //System.out.println(token.type + " Has lower priority than " + operations.peek());
                     Token o_2=operations.pop(); // pop the higher precedence operator
                     queue.add(o_2); // and add it to the output queue
                 }
@@ -174,6 +181,7 @@ public class Scanner {
             }
             queue.add(operations.pop());
         }
+
         return queue;
     }
 
