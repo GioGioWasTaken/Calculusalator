@@ -3,10 +3,22 @@ package Calculusalator;
 import java.util.*;
 
 import static Calculusalator.Token_type.*;
-
 public class Scanner {
+    public void outputDerivative(String inputExpr){
+        Derivative derivative = new Derivative();
+        Scanner scanner = new Scanner(inputExpr);
+        List<Token> tokens=scanner.scanTokens();
+        Queue<Token> RPN= ScanExprtoRPN(tokens);
+        ASTNode AST = scanner.scanRPNtoAST(RPN);
+        ASTNode derivedAST = derivative.findDerivedAST(AST);
+        System.out.println("AST: ");
+        RPNtoAST.printTree(AST," ");
+        System.out.println("Derivative of expression: ");
+        RPNtoAST.printTree(derivedAST, " ");
 
-    public void output(String inputExpr) {
+    }
+
+    public void outputIntegral(String inputExpr) {
         Scanner scanner = new Scanner(inputExpr);
         List<Token> tokens=scanner.scanTokens();
         Queue<Token> RPN= ScanExprtoRPN(tokens);
@@ -94,17 +106,8 @@ public class Scanner {
     }
 
     private void variable(){
-        boolean case_1=false; // if 1 multiplication was already added...
-        if(peekFormer()==NO_FORMER_CHARACTER){
-            addToken(NUMBER,"1"); // x is equivalent to 1*x
-            addToken(MULTIPLICATION,"*");
-            case_1=true;
-        }
         // in accordance with mathematical notation nx= n*x
-        if(peekFormer()!='*' && !case_1) {
-            if(isOperatorText(peekFormer())){
-                addToken(NUMBER,"1"); // if the expression is x but not at the start.
-            }
+        if(peekFormer()!='*' && peekFormer()!=NO_FORMER_CHARACTER) {
             addToken(MULTIPLICATION,"*");
         } // unless n*x was explicitly specified
 
@@ -113,12 +116,6 @@ public class Scanner {
         addToken(VARIABLE);
     }
 
-    private boolean isOperatorText(Character chara){
-        if (chara=='-' || chara == '+'){
-            return true;
-        }
-        return false;
-    }
     private char peek() {
         if (isAtEnd()) return '\0';
         return inputExpr.charAt(current); // if the current character is \n it will return it and the tokenizer will stop advancing

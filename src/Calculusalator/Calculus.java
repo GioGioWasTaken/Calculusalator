@@ -29,9 +29,14 @@ public class Calculus {
 
     public void calculate(String expr, int mode) {
         String exprNorm = Normalize(expr);
-
         Scanner scanner = new Scanner(exprNorm);
+        if(mode == DERIVATIVE_MODE){
+            scanner.outputDerivative(expr);
+        }
+        if(mode == INTEGRAL_MODE){
+            scanner.outputIntegral(expr);
+        }
+
         System.out.println(exprNorm + " Calculated with mode: " + mode);
-        scanner.output(exprNorm);
     }
 }
