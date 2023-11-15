@@ -142,6 +142,7 @@ public class Scanner {
 
 
     public static Queue<Token> ScanExprtoRPN(List<Token> tokens){ // to print the expr in RPN
+        // we can directly convert infix to an AST, but for comfort purposes I also want access to RPN
         Stack<Token> operations = new Stack<>();
         Queue<Token> queue = new LinkedList<>();
         for(Token token :tokens){
