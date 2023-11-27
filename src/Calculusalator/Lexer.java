@@ -3,26 +3,29 @@ package Calculusalator;
 import java.util.*;
 
 import static Calculusalator.Token_type.*;
-public class Scanner {
+public class Lexer {
     public void outputDerivative(String inputExpr){
         Derivative derivative = new Derivative();
-        Scanner scanner = new Scanner(inputExpr);
-        List<Token> tokens=scanner.scanTokens();
+        Lexer lexer = new Lexer(inputExpr);
+        List<Token> tokens= lexer.scanTokens();
         Queue<Token> RPN= ScanExprtoRPN(tokens);
-        ASTNode AST = scanner.scanRPNtoAST(RPN);
+        ASTNode AST = lexer.scanRPNtoAST(RPN);
         ASTNode derivedAST = derivative.findDerivedAST(AST);
         System.out.println("AST: ");
         RPNtoAST.printTree(AST," ");
         System.out.println("Derivative of expression: ");
         RPNtoAST.printTree(derivedAST, " ");
 
+        System.out.println("Infix notation simplifcation: ");
+        System.out.println(Simplify.simplify(derivedAST));
+
     }
 
     public void outputIntegral(String inputExpr) {
-        Scanner scanner = new Scanner(inputExpr);
-        List<Token> tokens=scanner.scanTokens();
+        Lexer lexer = new Lexer(inputExpr);
+        List<Token> tokens= lexer.scanTokens();
         Queue<Token> RPN= ScanExprtoRPN(tokens);
-        ASTNode AST = scanner.scanRPNtoAST(RPN);
+        ASTNode AST = lexer.scanRPNtoAST(RPN);
         System.out.println("infix expression: " + tokens);
         System.out.println("Expression in RPN: " + RPN);
         System.out.println("AST: ");
@@ -35,7 +38,7 @@ public class Scanner {
     static int current =0; // current position of the token
     private final List<Token> tokens = new ArrayList<>();
     private final String inputExpr;
-    Scanner(String inputExpr) {
+    Lexer(String inputExpr) {
         this.inputExpr = inputExpr; // take the input expression
     }
     List<Token> scanTokens() {

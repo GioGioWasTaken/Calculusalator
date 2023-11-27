@@ -36,22 +36,23 @@ public class Derivative {
                 // The power rule (assume ^ is only applied to expressions with x. Apply the logic that makes that happen later).
                 // the power of any number is always the right node
                 // d(T) =  right* (left^ (right-1))
-                Token coefficient = new Token(NUMBER, AST.right.value.lexeme);
-                ASTNode multiplier_Node = new ASTNode(coefficient);
-                multiplier_Node.left = null;
-                multiplier_Node.right= null;
-
+                Token former_Power = new Token(NUMBER, AST.right.value.lexeme);
+                ASTNode Derived_coeff = new ASTNode(former_Power);
+                Derived_coeff.left = null;
+                Derived_coeff.right= null;
 
                 int derivedExpo = Integer.parseInt(AST.right.value.lexeme) -1; // power -1
+
+
                 Token Exponent = new Token(NUMBER,String.valueOf(derivedExpo));
                 Token base = new Token(VARIABLE,AST.left.value.lexeme);
 
-                DerivedAST.value = new Token(PLUS, "*");
-                DerivedAST.left = multiplier_Node;
+                DerivedAST.value = new Token(MULTIPLICATION, "*");
+                DerivedAST.left = Derived_coeff;
                 DerivedAST.right = new ASTNode(new Token(POWER,"^"));
                 DerivedAST.right.left = new ASTNode(base);
                 DerivedAST.right.right = new ASTNode(Exponent);
-
+                break;
             case NUMBER:
                 // Constant term rule
                 DerivedAST.value = new Token(NUMBER, "0");
